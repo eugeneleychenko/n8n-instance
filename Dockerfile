@@ -10,5 +10,5 @@ ENV NODE_ENV=production
 # Expose port
 EXPOSE 5678
 
-# Start n8n using node
-CMD ["node", "/usr/local/bin/n8n"]
+# The n8n image already has the correct ENTRYPOINT and CMD
+# We don't need to override it
