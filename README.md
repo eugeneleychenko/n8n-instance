@@ -88,16 +88,32 @@ Should show:
 
 ## Troubleshooting
 
+### "Command 'node' not found" Error
+This happens if Railway isn't properly building from the Dockerfile:
+1. Make sure `railway.json` is present in the n8n-instance directory
+2. In Railway dashboard, go to Settings → Build → ensure "Builder" is set to "Dockerfile"
+3. Redeploy from Railway dashboard
+
 ### Can't access n8n URL
-- Check Railway logs: `railway logs`
-- Ensure deployment succeeded
+- Check Railway logs in the dashboard
+- Ensure deployment succeeded (should show "Server started on port...")
+- Wait 2-3 minutes for first deployment
+
+### Container keeps restarting
+1. Check Railway logs for specific errors
+2. Ensure you've added a volume:
+   - Service → Settings → Volumes
+   - Mount path: `/home/node/.n8n`
+3. Check environment variables are set correctly
 
 ### API key not working
 - Make sure you're using the full URL including `https://`
 - Verify API key is copied correctly (no extra spaces)
+- Ensure n8n API is enabled in Settings
 
 ### Lost data after restart
-- Add a Railway volume mounted to `/home/node/.n8n`
+- **Critical**: Add a Railway volume mounted to `/home/node/.n8n`
+- Without this, all workflows and settings are lost on restart
 
 ## Next Steps
 
