@@ -1,0 +1,10 @@
+# n8n data (will be stored in Railway volumes)
+.n8n/
+*.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env.local
