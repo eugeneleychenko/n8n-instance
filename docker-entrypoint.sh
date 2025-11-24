@@ -1,15 +1,12 @@
-#!/bin/bash
+#!/bin/sh
+set -e
 
-# Railway provides PORT, but n8n uses N8N_PORT
-if [ -n "$PORT" ]; then
-    export N8N_PORT=$PORT
+# Fix permissions on the volume mount if needed
+if [ -d "/home/node/.n8n" ]; then
+  echo "Fixing permissions on /home/node/.n8n..."
+  chown -R node:node /home/node/.n8n 2>/dev/null || true
+  chmod -R u+w /home/node/.n8n 2>/dev/null || true
 fi
 
-# Set default if neither is set
-export N8N_PORT=${N8N_PORT:-5678}
-
-echo "Starting n8n on port $N8N_PORT"
-
-# Execute n8n with all arguments passed to this script
-exec n8n "$@"
-
+# Switch to node user and run n8n
+exec su-exec node n8n "$@"

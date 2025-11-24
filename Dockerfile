@@ -12,10 +12,14 @@ ENV TZ=UTC
 # Expose port (Railway will map this automatically)
 EXPOSE 5678
 
-# Create .n8n directory and set proper permissions
+# Install su-exec for user switching in entrypoint
 USER root
-RUN mkdir -p /home/node/.n8n && chown -R node:node /home/node/.n8n
-USER node
+RUN apk add --no-cache su-exec
 
-# Don't override the default n8n entrypoint - it knows how to start properly
-# Railway will need to set N8N_PORT=${PORT} as an environment variable
+# Copy custom entrypoint that fixes volume permissions
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Use custom entrypoint
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD []
