@@ -12,5 +12,10 @@ ENV TZ=UTC
 # Expose port (Railway will map this automatically)
 EXPOSE 5678
 
+# Create .n8n directory and set proper permissions
+USER root
+RUN mkdir -p /home/node/.n8n && chown -R node:node /home/node/.n8n
+USER node
+
 # Don't override the default n8n entrypoint - it knows how to start properly
 # Railway will need to set N8N_PORT=${PORT} as an environment variable
